@@ -28,4 +28,4 @@ class Api():
                     "description": product_description,
                     "image": product_image,
                 })
-
+        
