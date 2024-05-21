@@ -1,5 +1,4 @@
 import requests
-import json
 
 class Api():
     def __init__(self) -> None:
