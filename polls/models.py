@@ -6,4 +6,6 @@ class Product(models.Model):
     price = models.IntegerField()
     description = models.CharField(max_length=100)
     image = models.CharField(max_length=100)
+    def __str__(self) -> str:
+        return self.name
         

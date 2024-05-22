@@ -7,7 +7,6 @@ api = Api()
 all_db_data = []
 
 
-
 def update_db(name, price, description, image):
         Product.objects.create(name=name, price=price, description=description, image=image)
 
@@ -22,6 +21,7 @@ def compare_api_db_data():
             continue
         else:
             update_db(name=dictionary["name"], price=dictionary["price"], description=dictionary["description"], image=dictionary["image"])
+
 
 def index(request):
     try: 
