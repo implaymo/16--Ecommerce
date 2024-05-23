@@ -1,6 +1,8 @@
-from django.shortcuts import render 
+from django.shortcuts import render, redirect
 from api import Api
 from polls.models import Product
+from django_registration.forms import RegistrationForm
+
 
 
 api = Api()
@@ -37,5 +39,5 @@ def index(request):
     }    
     return render(request, "index.html",context=context)
 
-def register(request):
-    return render(request, "registration_form.html")
+def login(request):
+    pass
