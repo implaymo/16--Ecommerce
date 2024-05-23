@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from api import Api
 from polls.models import Product
-from allauth.account.forms import SignupForm, LoginForm
 
 
 api = Api()

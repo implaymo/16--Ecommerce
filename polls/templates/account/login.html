@@ -1,17 +1,13 @@
-{% extends "account/base.html" %}
 
 {% load i18n %}
 {% load account socialaccount %}
 
-{% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
 
 <h1>{% trans "Sign In" %}</h1>
 
-<p>{% blocktrans %}If you have not created an account yet, then please
-<a href="{% url 'account_signup' %}">sign up</a> first.{% endblocktrans %}</p>
-{% endif %}
+<a href="{% url 'account_signup' %}">sign up</a> first</p>
 
 <form class="login" method="POST" action="{% url 'account_login' %}">
   {% csrf_token %}
