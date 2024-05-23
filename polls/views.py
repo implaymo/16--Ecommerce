@@ -37,3 +37,5 @@ def index(request):
     }    
     return render(request, "index.html",context=context)
 
+def register(request):
+    return render(request, "registration_form.html")
