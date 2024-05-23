@@ -36,3 +36,4 @@ def index(request):
         'db_data': db_data
     }    
     return render(request, "index.html",context=context)
+
