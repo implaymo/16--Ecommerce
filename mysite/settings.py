@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "polls",
     'allauth',
     'allauth.account',
+    'allauth.socialaccount'
 ]
 
 MIDDLEWARE = [
@@ -136,9 +137,9 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ACCOUNT_FORMS = {
-'signup': 'polls.forms.CustomSignupForm',
-'login': 'mysite.forms.MyCustomLoginForm'
-}
-
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+SITE_ID = 1
+
+LOGIN_REDIRECT_URL = ""

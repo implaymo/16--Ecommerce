@@ -4,7 +4,6 @@ from polls.models import Product
 from allauth.account.forms import SignupForm, LoginForm
 
 
-
 api = Api()
 all_db_data = []
 
@@ -39,18 +38,4 @@ def index(request):
     }    
     return render(request, "index.html",context=context)
 
-def account_signup(request):
-    form = SignupForm(request.POST or None)
-    if request.method == "POST" and form.is_valid():
-        print("VALID")
-        form.save(request=request)
-        return redirect("index")
-    return render(request, "registration.html", {'form': form})
-
-
-def account_login(request):
-    form = LoginForm(request.POST or None)
-    if request.method == "POST" and form.is_valid():
-        print("WE LOGGED")
-    return render(request, "login.html", {'form': form})
 
