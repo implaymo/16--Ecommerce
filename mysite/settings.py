@@ -138,4 +138,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ACCOUNT_FORMS = {
 'signup': 'polls.forms.CustomSignupForm',
+'login': 'mysite.forms.MyCustomLoginForm'
 }
+
+ACCOUNT_EMAIL_REQUIRED = True

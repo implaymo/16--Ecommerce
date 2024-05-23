@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from api import Api
 from polls.models import Product
-from .forms import CustomSignupForm
+from allauth.account.forms import SignupForm, LoginForm
+
 
 
 api = Api()
@@ -39,7 +40,7 @@ def index(request):
     return render(request, "index.html",context=context)
 
 def account_signup(request):
-    form = CustomSignupForm(request.POST or None)
+    form = SignupForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         print("VALID")
         form.save(request=request)
@@ -47,6 +48,9 @@ def account_signup(request):
     return render(request, "registration.html", {'form': form})
 
 
-def login(request):
-    pass
+def account_login(request):
+    form = LoginForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        print("WE LOGGED")
+    return render(request, "login.html", {'form': form})
 
