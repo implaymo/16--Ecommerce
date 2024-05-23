@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
 from api import Api
 from polls.models import Product
-from django_registration.forms import RegistrationForm
-
+from .forms import CustomSignupForm
 
 
 api = Api()
@@ -39,5 +38,15 @@ def index(request):
     }    
     return render(request, "index.html",context=context)
 
+def account_signup(request):
+    form = CustomSignupForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        print("VALID")
+        form.save(request=request)
+        return redirect("index")
+    return render(request, "registration.html", {'form': form})
+
+
 def login(request):
     pass
+
