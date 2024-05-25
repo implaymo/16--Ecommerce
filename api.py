@@ -14,7 +14,7 @@ class Api():
 
         for i in range(len(total_products)):
             product_name = data["products"][i]["title"]
-            product_price = data["products"][i]["price"]
+            product_price = "{:.2f}".format(data["products"][i]["price"])
             product_description = data["products"][i]["description"]
             product_image = data["products"][i]["thumbnail"]
             
