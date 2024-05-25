@@ -34,6 +34,9 @@ def index(request):
 
 def search(request):
     query_name = search_bar.get_search_input(request=request)
-    db.get_search_product(class_=Product, query_name=query_name)
-    return render(request, "index.html")
+    db_data = db.get_search_product(class_=Product, query_name=query_name)
+    context = {
+        'db_data': db_data
+    }    
+    return render(request, "index.html", context=context)
 

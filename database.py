@@ -12,5 +12,5 @@ class Database:
             self.all_db_data.append(product.name)
             
     def get_search_product(self, query_name, class_):
-        searched_product = class_.objects.filter(name__contains=query_name)
-        return searched_product
+        search_product = class_.objects.filter(name__contains=query_name)
+        return search_product
