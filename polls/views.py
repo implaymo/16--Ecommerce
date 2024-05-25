@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from api import Api
 from polls.models import Product
 from database import Database
@@ -35,8 +35,11 @@ def index(request):
 def search(request):
     query_name = search_bar.get_search_input(request=request)
     db_data = db.get_search_product(class_=Product, query_name=query_name)
-    context = {
-        'db_data': db_data
-    }    
-    return render(request, "index.html", context=context)
-
+    if db_data:
+        context = {
+            'db_data': db_data
+        }    
+        return render(request, "index.html", context=context)
+    else:
+        return redirect('index')
+    
