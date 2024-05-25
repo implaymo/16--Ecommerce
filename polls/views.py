@@ -3,7 +3,7 @@ from api import Api
 from polls.models import Product
 from database import Database
 from searchbar import SearchBar
-
+from django.contrib import messages
 
 api = Api()
 db = Database()
@@ -36,10 +36,9 @@ def search(request):
     query_name = search_bar.get_search_input(request=request)
     db_data = db.get_search_product(class_=Product, query_name=query_name)
     if db_data:
-        context = {
-            'db_data': db_data
-        }    
+        context = {'db_data': db_data }    
         return render(request, "index.html", context=context)
     else:
+        messages.info(request, "Item doensn't exist")
         return redirect('index')
     

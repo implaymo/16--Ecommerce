@@ -56,12 +56,21 @@ border-radius: 15px;
       <div class="col-6 col-sm-8 col-lg-6">
         <img src="{% static 'ecommerce.jpeg' %}" height="300" width="700" class="roundrect">
       </div>
-      <div class="col-lg-6">
+        <div class="col-lg-6">
         <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">E-Shop</h1>
         <p class="lead">The best tech shop around the world</p>
         <div class="d-grid gap-2 d-md-flex justify-content-md-start">
         </div>
       </div>
+      {% if messages %}
+		<div class="messages">
+      {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>
+          {{ message }}
+        </div>
+      {% endfor %}
+      </div>
+      {% endif %}
     </div>
   </div>
   <div class="album py-5 bg-body-tertiary">
@@ -86,3 +95,14 @@ border-radius: 15px;
         </div>
         {% endfor %}
   </div>
+  <script>
+    // Get all info messages
+    var info_messages = document.getElementsByClassName('alert-info');
+
+    setTimeout(function(){
+        for (var i = 0; i < info_messages.length; i ++) {
+            // Set display attribute as !important, neccessary when using bootstrap
+            info_messages[i].setAttribute('style', 'display:none !important');
+        }
+    }, 3000);
+</script>
