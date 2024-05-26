@@ -17,3 +17,7 @@ class Database:
     
     def add(self, name, price, class_):
         class_.objects.create(name=name, price=price)
+        
+    def get_checkout_db_data(self, class_):
+        db_data = class_.objects.all()
+        return db_data

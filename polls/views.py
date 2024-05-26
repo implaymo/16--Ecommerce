@@ -53,9 +53,9 @@ def checkout_products(request, product_id):
     else:
         db.add(class_=Checkout, name=product.name, price=product.price)
     finally:
-        checkout_products = db.get_all_db_data(class_=Checkout)
-
+        checkout_products = db.get_checkout_db_data(class_=Checkout)
+        
     context = {
-        'db_data': checkout_products
+        'checkout_products': checkout_products
         }    
     return render(request, "index.html",context=context)
