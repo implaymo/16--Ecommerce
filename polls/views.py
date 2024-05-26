@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from api import Api
-from polls.models import Product
+from polls.models import Product, Checkout
 from database import Database
 from searchbar import SearchBar
 from django.contrib import messages
@@ -39,7 +39,9 @@ def search(request):
     query_name = search_bar.get_search_input(request=request)
     db_data = db.get_search_product(class_=Product, query_name=query_name)
     if db_data:
-        context = {'db_data': db_data }    
+        context = {
+            'db_data': db_data 
+            }    
         return render(request, "index.html", context=context)
     else:
         messages.info(request, "Item doensn't exist")
@@ -47,4 +49,8 @@ def search(request):
     
 
 def checkout(request):
-    return render(request, "checkout.html")
+    checkout_products = db.get_all_db_data(class_=Checkout)
+    context = {
+            'db_data': checkout_products
+            } 
+    return render(request, "checkout.html", context=context)
