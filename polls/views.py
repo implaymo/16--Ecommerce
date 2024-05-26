@@ -17,6 +17,9 @@ def compare_api_db_data():
         else:
             db.update(name=dictionary["name"], price=dictionary["price"], description=dictionary["description"], image=dictionary["image"], class_=Product)
 
+
+
+
 def index(request):
     try: 
         api.get_all_products()
@@ -42,3 +45,6 @@ def search(request):
         messages.info(request, "Item doensn't exist")
         return redirect('index')
     
+
+def checkout(request):
+    return render(request, "checkout.html")

@@ -26,12 +26,10 @@
                 </svg>
             </a>
             <ul class="dropdown-menu text-small" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 34px);" data-popper-placement="bottom-start">
-                <!-- NEED TO ADD A WAY OF SHOWING THE ITEMS ADDED TO THE SHOPPING CART. PROBABLY A LOOP-->
+                <!-- SHOPPING CART: NEED TO ADD A WAY OF SHOWING THE ITEMS ADDED TO THE SHOPPING CART. PROBABLY A LOOP-->
                 <li><a class="dropdown-item" href="#">New project...</a></li>
                 <li><hr class="dropdown-divider"></li>
-                {% if request.user.is_authenticated %}
-                <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
-                {% endif %}
+                <li><a class="dropdown-item" href="{% url 'checkout' %}">Checkout</a></li>
             </ul>          
         </div>
 
