@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
-from api import Api
+from django.shortcuts import render, redirect, get_object_or_404
 from polls.models import Product, Checkout
 from database import Database
 from searchbar import SearchBar
 from django.contrib import messages
+from api import Api
 
 api = Api()
 db = Database()
@@ -16,8 +16,6 @@ def compare_api_db_data():
             continue
         else:
             db.update(name=dictionary["name"], price=dictionary["price"], description=dictionary["description"], image=dictionary["image"], class_=Product)
-
-
 
 
 def index(request):
@@ -47,10 +45,17 @@ def search(request):
         messages.info(request, "Item doensn't exist")
         return redirect('index')
     
+def checkout_products(request, product_id):
+    try:
+        product = get_object_or_404(Product, id=product_id)
+    except Exception as e:
+        print(f"Error: {e}")
+    else:
+        db.add(class_=Checkout, name=product.name, price=product.price)
+    finally:
+        checkout_products = db.get_all_db_data(class_=Checkout)
 
-def checkout(request):
-    checkout_products = db.get_all_db_data(class_=Checkout)
     context = {
-            'db_data': checkout_products
-            } 
-    return render(request, "checkout.html", context=context)
+        'db_data': checkout_products
+        }    
+    return render(request, "index.html",context=context)

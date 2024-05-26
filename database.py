@@ -14,3 +14,6 @@ class Database:
     def get_search_product(self, query_name, class_):
         search_product = class_.objects.filter(name__contains=query_name)
         return search_product
+    
+    def add(self, name, price, class_):
+        class_.objects.create(name=name, price=price)
