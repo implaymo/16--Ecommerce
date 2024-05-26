@@ -18,7 +18,7 @@ def compare_api_db_data():
             db.update(name=dictionary["name"], price=dictionary["price"], description=dictionary["description"], image=dictionary["image"], class_=Product)
 
 
-def index(request):
+def get_website_data():
     try: 
         api.get_all_products()
         db.get_all_db_data(class_=Product)
@@ -26,10 +26,15 @@ def index(request):
     except Exception as e:
         print(f"ERROR: {e}")
         
+
+
+def index(request):
+    get_website_data()
+        
     db_data = Product.objects.all()
     
     context = {
-        'db_data': db_data
+        'db_data': db_data,
     }    
     return render(request, "index.html",context=context)
 
@@ -45,7 +50,7 @@ def search(request):
         messages.info(request, "Item doensn't exist")
         return redirect('index')
     
-def checkout_products(request, product_id):
+def cart_products(request, product_id):
     try:
         product = get_object_or_404(Product, id=product_id)
     except Exception as e:
@@ -54,8 +59,14 @@ def checkout_products(request, product_id):
         db.add(class_=Checkout, name=product.name, price=product.price)
     finally:
         checkout_products = db.get_checkout_db_data(class_=Checkout)
+        db_data = Product.objects.all()
         
     context = {
-        'checkout_products': checkout_products
+        'checkout_products': checkout_products,
+        'db_data': db_data
         }    
-    return render(request, "index.html",context=context)
+    return render(request, "index.html", context=context)
+
+def delete_cart(request):
+    Checkout.objects.all().delete()
+    return redirect('index')
