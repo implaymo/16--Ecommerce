@@ -92,7 +92,7 @@ button {
     }
 </style>
 
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- HEROES -->
   <div class="container col-xxl-8 px-4 py-5">
     <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
@@ -151,10 +151,36 @@ button {
     }, 3000);
 
     function addItem(productId) {
-            alert('Item added with ID: ' + productId);
-            window.location.href = "{% url 'cart_products' 0 %}".replace('/0/', '/' + productId + '/');
-             }
+            $.ajax({
+                type: 'POST',
+                url: '{% url "add_to_cart" %}',
+                data: {
+                    'product_id': productId,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    alert(response.message);
+                    // Update the cart UI with the new product
+                    updateCartUI(response.checkout_products);
+                },
+                error: function(response) {
+                    alert('Error adding product to cart: ' + response.responseJSON.error);
+                }
+            });
+}
+    function updateCartUI(checkout_products) {
+      console.log(checkout_products);
+        checkout_products.forEach(function(product) {
+            $('#cart').append(
+                `<div class="cart-item">
+                    <h4>${product.name}</h4>
+                    <p>Price: $${product.price}</p>
+                </div>`
+            );
+        });
+}
     function deleteCart() {
-      window.location.href = "{% url 'delete_cart' %}"
+      window.location.href = "{% url 'delete_cart' %}";
     }
+
 </script>

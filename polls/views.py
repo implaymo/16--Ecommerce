@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
 from polls.models import Product, Checkout
 from database import Database
 from searchbar import SearchBar
 from django.contrib import messages
 from api import Api
+import logging
+logger = logging.getLogger(__name__)
 
 api = Api()
 db = Database()
@@ -26,8 +29,6 @@ def get_website_data():
     except Exception as e:
         print(f"ERROR: {e}")
         
-
-
 def index(request):
     get_website_data()
         
@@ -50,22 +51,25 @@ def search(request):
         messages.info(request, "Item doensn't exist")
         return redirect('index')
     
-def cart_products(request, product_id):
-    try:
-        product = get_object_or_404(Product, id=product_id)
-    except Exception as e:
-        print(f"Error: {e}")
-    else:
-        db.add(class_=Checkout, name=product.name, price=product.price)
-    finally:
-        checkout_products = db.get_checkout_db_data(class_=Checkout)
-        db_data = Product.objects.all()
-        
-    context = {
-        'checkout_products': checkout_products,
-        'db_data': db_data
-        }    
-    return render(request, "index.html", context=context)
+def add_to_cart(request):
+    logger.info(f"Request method: {request.method}")
+    if request.method == "POST":
+        product_id = request.POST.get('product_id')
+        logger.info(f"Product ID: {product_id}")
+        try:
+            product = get_object_or_404(Product, id=product_id)        
+            db.add_checkout_product(class_=Checkout, name=product.name, price=product.price)
+            checkout_products = db.get_checkout_product(class_=Checkout)
+
+            response_data = {
+                'message': 'Product added to cart',
+                'checkout_products': list(checkout_products.values()),  
+            }
+            return JsonResponse(response_data)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 def delete_cart(request):
     Checkout.objects.all().delete()
