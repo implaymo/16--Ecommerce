@@ -16,7 +16,3 @@ class Checkout(models.Model):
     def __str__(self) -> str:
         return self.name
     
-class Total(models.Model):
-    total_bill = models.FloatField()
-    def __str__(self) -> str:
-        return self.name

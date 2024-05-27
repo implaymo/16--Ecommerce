@@ -28,15 +28,23 @@ def get_website_data():
         compare_api_db_data()
     except Exception as e:
         print(f"ERROR: {e}")
-        
+
+    
 def index(request):
     get_website_data()       
     db_data = Product.objects.all()
     checkout_products = Checkout.objects.all()
 
+    try:
+        all_price = [product.price for product in checkout_products]
+        total = sum(all_price)
+    except UnboundLocalError:
+        print(f"ERROR {UnboundLocalError}")
+    
     context = {
         'db_data': db_data,
         'checkout_products': checkout_products,
+        'bill': total
     }    
     return render(request, "index.html", context=context)
 
@@ -77,3 +85,9 @@ def delete_cart(request):
     Checkout.objects.all().delete()
     return redirect('index')
 
+def update_bill(request):
+    if request.method == "GET":
+        checkout_products = Checkout.objects.all()
+        all_price = [product.price for product in checkout_products]
+        total = sum(all_price)
+        return JsonResponse({'bill': total})
