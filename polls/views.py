@@ -30,14 +30,16 @@ def get_website_data():
         print(f"ERROR: {e}")
         
 def index(request):
-    get_website_data()
-        
+    get_website_data()       
     db_data = Product.objects.all()
-    
+    checkout_products = Checkout.objects.all()
+
     context = {
         'db_data': db_data,
+        'checkout_products': checkout_products,
     }    
-    return render(request, "index.html",context=context)
+    return render(request, "index.html", context=context)
+
 
 def search(request):
     query_name = search_bar.get_search_input(request=request)
@@ -74,3 +76,4 @@ def add_to_cart(request):
 def delete_cart(request):
     Checkout.objects.all().delete()
     return redirect('index')
+
