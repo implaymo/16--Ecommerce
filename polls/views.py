@@ -85,6 +85,18 @@ def delete_cart(request):
     Checkout.objects.all().delete()
     return redirect('index')
 
+def delete_item(request):
+    if request.method == "GET":
+        product_id = request.GET.get('product_id')
+        try:
+            cart_item = get_object_or_404(Checkout, id=product_id)
+            print(cart_item)
+        except Exception as e:
+            print(f"ERROR NO ID FOUND: {e}")
+
+    return redirect('index')
+            
+
 def update_bill(request):
     if request.method == "GET":
         checkout_products = Checkout.objects.all()
