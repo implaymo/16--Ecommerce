@@ -90,4 +90,4 @@ def update_bill(request):
         checkout_products = Checkout.objects.all()
         all_price = [product.price for product in checkout_products]
         total = sum(all_price)
-        return JsonResponse({'bill': total})
+        return JsonResponse({'bill': round(total, 2)})
