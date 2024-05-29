@@ -203,6 +203,7 @@ function deleteItem(productId) {
         $('#cart-item-' + productId).remove();
       } else {
         console.error("Error deleting item: No success flag");
+ 
       }
     },
     error: function(error) {

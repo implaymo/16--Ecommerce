@@ -94,6 +94,7 @@ def delete_item(request):
             cart_item.delete()
             checkout_products = db.get_checkout_product(class_=Checkout)
             response_data = {
+                            'success': True,
                             'checkout_products': list(checkout_products.values()),  
                         }
             return JsonResponse(response_data)
