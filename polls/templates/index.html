@@ -31,18 +31,20 @@
                 <li>
                     <div class="cart-item">
                         <h4>{{ product.name }}</h4>
-                        <p>Price: {{ product.price }} $ </p> <button onclick="deleteItem()">
+                        <p>Price: {{ product.price }} $ </p> 
+                        <h6>Remove Item: <button onclick="deleteItem('{{ product.id }}')">
                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                             <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
                           </svg>
                         </button>
+                      </h6>
                     </div>
                 </li>
             {% endfor %}              
           </div>
           <div id="bill">
-              Total: $<span id="bill-amount">{{ bill }}</span>
+              <h6>Total: $<span id="bill-amount">{{ bill }}</span></h6>
           </div>
               <button onclick="deleteCart()">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">
@@ -186,25 +188,48 @@ button {
                 }
             });
 }
-    function updateCartUI(checkout_products) {
-      $('#cart-items-container').empty();
-        checkout_products.forEach(function(product) {
-          console.log(product.name)
-          updateBill();
-            $('#cart-items-container').append(
-                `<div class="cart-items-container">
-                    <h4>${product.name}</h4>
-                    <p>Price: $${product.price}</p>
-                    <button onclick="deleteItem()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                            <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
-                    </svg>
-                  </button>
-                </div>`
-            );
-    });
+function deleteItem(productId) {
+    $.ajax({
+    url: "{% url 'delete_item' %}",
+    method: 'POST',
+    data: {
+      'product_id': productId,
+      'csrfmiddlewaretoken': '{{ csrf_token }}'
+    },
+    success: function(data) {
+      if (data.success) {
+        console.log('Item deleted successfully');
+        // Remove the item from the DOM
+        $('#cart-item-' + productId).remove();
+      } else {
+        console.error("Error deleting item: No success flag");
+      }
+    },
+    error: function(error) {
+      console.error("Error deleting item:", error);
+    }
+  });
 }
+
+function updateCartUI(checkout_products) {
+  $('#cart-items-container').empty(); 
+  checkout_products.forEach(function(product) {
+    $('#cart-items-container').append(
+      `<div class="cart-item" id="cart-item-${product.id}">
+          <h4>${product.name}</h4>
+          <p>Price: $${product.price}</p>
+          <button onclick="deleteItem(${product.id})">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+              <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
+            </svg>
+          </button>
+      </div>`
+    );
+  });
+  updateBill();
+}
+
     function updateBill() {
       $.ajax({
         url: "{% url 'update_bill' %}",
@@ -221,16 +246,6 @@ button {
     function deleteCart() {
       window.location.href = "{% url 'delete_cart' %}";
     }
-    function deleteItem() {
-      $.ajax({
-        url: "{% url 'delete_item' %}",
-        method: 'GET',
-        success: function(data) {
-                    $('#cart-item').text(data);
-                },
-        error: function(error) {
-            console.error("Error deleting item:", error);
-        }
-      });
-    }
+
+ 
 </script>

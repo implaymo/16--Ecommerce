@@ -86,16 +86,22 @@ def delete_cart(request):
     return redirect('index')
 
 def delete_item(request):
-    if request.method == "GET":
-        product_id = request.GET.get('product_id')
+    logger.info(f"Request method: {request.method}")
+    if request.method == "POST":
+        product_id = request.POST.get('product_id')
         try:
             cart_item = get_object_or_404(Checkout, id=product_id)
-            print(cart_item)
+            cart_item.delete()
+            checkout_products = db.get_checkout_product(class_=Checkout)
+            response_data = {
+                            'checkout_products': list(checkout_products.values()),  
+                        }
+            return JsonResponse(response_data)
         except Exception as e:
-            print(f"ERROR NO ID FOUND: {e}")
+            logger.error(f"Error deleting item: {e}")
+            return JsonResponse({'error': str(e)}, status=400)
 
-    return redirect('index')
-            
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 def update_bill(request):
     if request.method == "GET":
