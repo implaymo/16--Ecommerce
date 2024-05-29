@@ -201,6 +201,7 @@ function deleteItem(productId) {
         console.log('Item deleted successfully');
         // Remove the item from the DOM
         $('#cart-item-' + productId).remove();
+        updateBill()
       } else {
         console.error("Error deleting item: No success flag");
  

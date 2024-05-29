@@ -106,7 +106,10 @@ def delete_item(request):
 
 def update_bill(request):
     if request.method == "GET":
-        checkout_products = Checkout.objects.all()
-        all_price = [product.price for product in checkout_products]
-        total = sum(all_price)
-        return JsonResponse({'bill': round(total, 2)})
+        try:
+            checkout_products = Checkout.objects.all()
+            all_price = [product.price for product in checkout_products]
+            total = sum(all_price)
+            return JsonResponse({'bill': round(total, 2)})
+        except Exception as e:
+            logger.error(f'Error: {e}')
