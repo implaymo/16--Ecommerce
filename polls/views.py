@@ -125,10 +125,11 @@ def update_bill(request):
             
 def checkout(request):
     checkout_products = Checkout.objects.all()
-    total_products = [product.name for product in checkout_products]
-    total = len(total_products)
+    products = [product.name for product in checkout_products]
+    total_products = len(products)
+    update_bill(request)
     context = {
         'checkout_products': checkout_products,
-        'total_products': total
+        'total_products': total_products
     }
     return render(request, 'checkout.html', context=context)
