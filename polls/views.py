@@ -122,3 +122,13 @@ def update_bill(request):
             return JsonResponse({'bill': round(total, 2)})
         except Exception as e:
             logger.error(f'Error: {e}')
+            
+def checkout(request):
+    checkout_products = Checkout.objects.all()
+    total_products = [product.name for product in checkout_products]
+    total = len(total_products)
+    context = {
+        'checkout_products': checkout_products,
+        'total_products': total
+    }
+    return render(request, 'checkout.html', context=context)
