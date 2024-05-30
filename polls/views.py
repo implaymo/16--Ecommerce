@@ -82,8 +82,17 @@ def add_to_cart(request):
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 def delete_cart(request):
-    Checkout.objects.all().delete()
-    return redirect('index')
+    if request.method == "POST":
+        try:
+            Checkout.objects.all().delete()
+            response_data = {
+                'success': True
+            }
+            return JsonResponse(response_data)
+        except Exception as e:
+            print(f"Error: {e}")
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 def delete_item(request):
     logger.info(f"Request method: {request.method}")
