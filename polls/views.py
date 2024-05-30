@@ -28,6 +28,12 @@ def get_website_data():
         compare_api_db_data()
     except Exception as e:
         print(f"ERROR: {e}")
+        
+def bill():
+    checkout_products = Checkout.objects.all()
+    all_price = [product.price for product in checkout_products]
+    total = sum(all_price)
+    return total
 
     
 def index(request):
@@ -116,9 +122,7 @@ def delete_item(request):
 def update_bill(request):
     if request.method == "GET":
         try:
-            checkout_products = Checkout.objects.all()
-            all_price = [product.price for product in checkout_products]
-            total = sum(all_price)
+            total = bill()
             return JsonResponse({'bill': round(total, 2)})
         except Exception as e:
             logger.error(f'Error: {e}')
@@ -127,9 +131,10 @@ def checkout(request):
     checkout_products = Checkout.objects.all()
     products = [product.name for product in checkout_products]
     total_products = len(products)
-    update_bill(request)
+    total_bill = bill()
     context = {
         'checkout_products': checkout_products,
-        'total_products': total_products
+        'total_products': total_products,
+        'bill': total_bill
     }
     return render(request, 'checkout.html', context=context)
