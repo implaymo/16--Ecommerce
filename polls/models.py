@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.base_user import AbstractBaseUser
+
 
 # Create your models here.
 class Product(models.Model):
@@ -16,3 +18,4 @@ class Checkout(models.Model):
     def __str__(self) -> str:
         return self.name
     
+

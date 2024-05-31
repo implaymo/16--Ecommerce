@@ -6,12 +6,19 @@ from database import Database
 from searchbar import SearchBar
 from django.contrib import messages
 from api import Api
+import stripe
+import os
+from dotenv import load_dotenv
 import logging
+
+load_dotenv()
 logger = logging.getLogger(__name__)
 
 api = Api()
 db = Database()
 search_bar = SearchBar()
+
+stripe.api_key = os.getenv("STRIPE_PRIVATE_KEY")
 
 
 def compare_api_db_data():
