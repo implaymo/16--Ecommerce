@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     "polls",
     'allauth',
     'allauth.account',
-    'allauth.socialaccount'
+    'allauth.socialaccount',
+    'encrypted_model_fields'
 ]
 
 MIDDLEWARE = [
@@ -157,3 +158,4 @@ EMAIL_USE_TLS = True
 
 STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLIC_KEY") 
 STRIPE_SECRET_KEY = os.getenv("STRIPE_PRIVATE_KEY")
+FIELD_ENCRYPTION_KEY = os.environ.get('ENCRYPTION_KEY')

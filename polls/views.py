@@ -20,7 +20,6 @@ search_bar = SearchBar()
 
 stripe.api_key = os.getenv("STRIPE_PRIVATE_KEY")
 
-
 def compare_api_db_data():
     for dictionary in api.all_products:
         if dictionary["name"] in db.all_db_data:
@@ -45,6 +44,7 @@ def bill():
 
     
 def index(request):
+    
     get_website_data()       
     db_data = Product.objects.all()
     checkout_products = Checkout.objects.all()
