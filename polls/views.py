@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from polls.models import Product, Checkout
 from database import Database
@@ -138,3 +139,6 @@ def checkout(request):
         'bill': total_bill
     }
     return render(request, 'checkout.html', context=context)
+
+def payment(request):
+    pass
