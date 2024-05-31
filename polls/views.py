@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from polls.models import Product, Checkout
@@ -147,5 +147,9 @@ def checkout(request):
     }
     return render(request, 'checkout.html', context=context)
 
-def payment(request):
-    pass
+def create_payment(request):
+    if request.method == "POST":
+        print(request.POST)
+        return HttpResponse("Form data received successfully")
+    else:
+        return HttpResponse("Only POST requests are allowed for this view")
