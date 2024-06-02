@@ -152,6 +152,10 @@ def checkout(request):
 
         try:
             checkout_session = stripe.checkout.Session.create(
+                payment_method_types=[
+                    'card', 
+                    'paypal'
+                ],
                 line_items=line_items,
                 mode='payment',
                 success_url='http://127.0.0.1:8000' + '/success_checkout/',
