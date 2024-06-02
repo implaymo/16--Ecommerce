@@ -138,30 +138,25 @@ def update_bill(request):
             
 def checkout(request):
     if request.method == "GET":
-        all_price = []
+        line_items = []
         checkout_products = Checkout.objects.all()
+        
         for product in checkout_products:
             stripe_product_id = stripe_api.create_product(product=product)
             stripe_price_id = stripe_api.create_price(stripe_product_id=stripe_product_id, checkout_product_price=product.price)
+            
+            line_items.append({
+                'price': stripe_price_id,
+                'quantity': 1  
+            })
 
-            all_price.append(stripe_price_id)
-
-        total_products = len(all_price)
         try:
             checkout_session = stripe.checkout.Session.create(
-                line_items=[
-                    {
-                        # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                        
-                        'price': stripe_price_id,
-                        'quantity': total_products,
-                    },
-                ],
+                line_items=line_items,
                 mode='payment',
-                success_url='http://127.0.0.1:8000/' + '/success.html',
-                cancel_url='http://127.0.0.1:8000/' + '/cancel.html',
+                success_url='http://127.0.0.1:8000/success.html',
+                cancel_url='http://127.0.0.1:8000/cancel.html',
             )
-            print(f"I GOT A CHECKOUT SESSION {checkout_session}")
             return redirect(checkout_session.url)
         except stripe.error.StripeError as e:
             print(f"Stripe error: {e}")
