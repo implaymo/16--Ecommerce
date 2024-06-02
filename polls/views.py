@@ -37,8 +37,10 @@ def get_website_data():
     except Exception as e:
         print(f"ERROR: {e}")
         
-def bill(all_price_list):
-    total = sum(all_price_list)
+def bill():
+    checkout_products = Checkout.objects.all()
+    all_price = [product.price for product in checkout_products]
+    total = sum(all_price)
     return total
 
     
@@ -140,20 +142,17 @@ def checkout(request):
         checkout_products = Checkout.objects.all()
         for product in checkout_products:
             stripe_product_id = stripe_api.create_product(product=product)
-            print(f"PRODUCT ID: {stripe_product_id}")
-
             stripe_price_id = stripe_api.create_price(stripe_product_id=stripe_product_id, checkout_product_price=product.price)
-            print(f"PRODUCT PRICE: {product.price}")
 
-            all_price.append(product.price)
+            all_price.append(stripe_price_id)
 
-        total_bill = bill(all_price_list=all_price)
         total_products = len(all_price)
         try:
             checkout_session = stripe.checkout.Session.create(
                 line_items=[
                     {
                         # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                        
                         'price': stripe_price_id,
                         'quantity': total_products,
                     },
