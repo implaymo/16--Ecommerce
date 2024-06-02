@@ -14,6 +14,5 @@ urlpatterns = [
     path('update_bill/', views.update_bill, name="update_bill"),
     path('delete_item/', views.delete_item, name="delete_item"),
     path('checkout/', views.checkout, name="checkout"),
-    path('create_payment', views.create_payment, name='create_payment')
 ]
 

@@ -6,6 +6,7 @@ from database import Database
 from searchbar import SearchBar
 from django.contrib import messages
 from api import Api
+from stripe_api import StripeApi
 import stripe
 import os
 from dotenv import load_dotenv
@@ -17,8 +18,8 @@ logger = logging.getLogger(__name__)
 api = Api()
 db = Database()
 search_bar = SearchBar()
+stripe_api = StripeApi(api_key=os.getenv("STRIPE_PRIVATE_KEY") )
 
-stripe.api_key = os.getenv("STRIPE_PRIVATE_KEY")
 
 def compare_api_db_data():
     for dictionary in api.all_products:
@@ -36,10 +37,8 @@ def get_website_data():
     except Exception as e:
         print(f"ERROR: {e}")
         
-def bill():
-    checkout_products = Checkout.objects.all()
-    all_price = [product.price for product in checkout_products]
-    total = sum(all_price)
+def bill(all_price_list):
+    total = sum(all_price_list)
     return total
 
     
@@ -136,20 +135,41 @@ def update_bill(request):
             logger.error(f'Error: {e}')
             
 def checkout(request):
-    checkout_products = Checkout.objects.all()
-    products = [product.name for product in checkout_products]
-    total_products = len(products)
-    total_bill = bill()
-    context = {
-        'checkout_products': checkout_products,
-        'total_products': total_products,
-        'bill': total_bill
-    }
-    return render(request, 'checkout.html', context=context)
+    if request.method == "GET":
+        all_price = []
+        checkout_products = Checkout.objects.all()
+        for product in checkout_products:
+            stripe_product_id = stripe_api.create_product(product=product)
+            print(f"PRODUCT ID: {stripe_product_id}")
 
-def create_payment(request):
-    if request.method == "POST":
-        print(request.POST)
-        return HttpResponse("Form data received successfully")
+            stripe_price_id = stripe_api.create_price(stripe_product_id=stripe_product_id, checkout_product_price=product.price)
+            print(f"PRODUCT PRICE: {product.price}")
+
+            all_price.append(product.price)
+
+        total_bill = bill(all_price_list=all_price)
+        total_products = len(all_price)
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                line_items=[
+                    {
+                        # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                        'price': stripe_price_id,
+                        'quantity': total_products,
+                    },
+                ],
+                mode='payment',
+                success_url='http://127.0.0.1:8000/' + '/success.html',
+                cancel_url='http://127.0.0.1:8000/' + '/cancel.html',
+            )
+            print(f"I GOT A CHECKOUT SESSION {checkout_session}")
+            return redirect(checkout_session.url)
+        except stripe.error.StripeError as e:
+            print(f"Stripe error: {e}")
+            return HttpResponse("An error occurred while creating the Stripe checkout session.", status=500)
+        except Exception as e:
+            print(f"General error: {e}")
+            return HttpResponse("An unexpected error occurred.", status=500)
     else:
-        return HttpResponse("Only POST requests are allowed for this view")
+        return HttpResponse("Invalid request method.", status=405)
+
