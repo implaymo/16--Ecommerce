@@ -154,8 +154,8 @@ def checkout(request):
             checkout_session = stripe.checkout.Session.create(
                 line_items=line_items,
                 mode='payment',
-                success_url='http://127.0.0.1:8000/success.html',
-                cancel_url='http://127.0.0.1:8000/cancel.html',
+                success_url='http://127.0.0.1:8000' + '/success_checkout/',
+                cancel_url='http://127.0.0.1:8000' + '/cancel_checkout/',
             )
             return redirect(checkout_session.url)
         except stripe.error.StripeError as e:
@@ -167,3 +167,9 @@ def checkout(request):
     else:
         return HttpResponse("Invalid request method.", status=405)
 
+
+def cancel_checkout(request):
+    return render(request, 'cancel.html')
+
+def success_checkout(request):
+    return render(request, 'success.html')
