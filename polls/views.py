@@ -164,7 +164,7 @@ def checkout(request):
             return redirect(checkout_session.url)
         except stripe.error.StripeError as e:
             print(f"Stripe error: {e}")
-            return HttpResponse("An error occurred while creating the Stripe checkout session.", status=500)
+            return HttpResponse("No item in the cart. Add an item to checkout.", status=500)
         except Exception as e:
             print(f"General error: {e}")
             return HttpResponse("An unexpected error occurred.", status=500)
