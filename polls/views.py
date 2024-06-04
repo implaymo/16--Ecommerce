@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from polls.models import Product, Checkout
 from database import Database
-from searchbar import SearchBar
 from django.contrib import messages
 from api import Api
 from stripe_api import StripeApi
@@ -17,7 +16,6 @@ logger = logging.getLogger(__name__)
 
 api = Api()
 db = Database()
-search_bar = SearchBar()
 stripe_api = StripeApi(api_key=os.getenv("STRIPE_PRIVATE_KEY") )
 
 
@@ -65,8 +63,8 @@ def index(request):
 
 
 def search(request):
-    query_name = search_bar.get_search_input(request=request)
-    db_data = db.get_search_product(class_=Product, query_name=query_name)
+    product_searched = request.POST.get('search_query')
+    db_data = db.get_search_product(class_=Product, query_name=product_searched)
     if db_data:
         context = {
             'db_data': db_data 
