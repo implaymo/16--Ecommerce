@@ -78,7 +78,10 @@ def add_to_cart(request):
     logger.info(f"Request method: {request.method}")
     if request.method == "POST":
         product_id = request.POST.get('product_id')
+        print(f"PRODUCT ID {product_id}")
         logger.info(f"Product ID: {product_id}")
+        amount_product = request.POST.get("item_amount")
+        print(f"TOTAL OF ITEMS ADDED {amount_product}")
         try:
             product = get_object_or_404(Product, id=product_id)        
             db.add_checkout_product(class_=Checkout, name=product.name, price=product.price)
