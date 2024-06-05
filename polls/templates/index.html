@@ -173,7 +173,7 @@ button {
                   </svg>
                 </button> 
 
-                  <input type="number" class="quantity" value="1" min="1" size="2" style="width: 50px;" name="item-amount">
+                  <input type="number" class="quantity" value="1" min="1" size="2" style="width: 50px;" name="item-amount" id="item-amount-{{ product.id }}">
 
                   <button type="button"  class="plus"> 
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-dotted" viewBox="0 0 16 16">
@@ -206,7 +206,7 @@ button {
     }, 3000);
 
     function addItem(productId) {
-      let itemAmount = document.getElementsByName('item-amount')[0].value;
+      let itemAmount = document.getElementById(`item-amount-${productId}`).value;
             $.ajax({
                 type: 'POST',
                 url: '{% url "add_to_cart" %}',
