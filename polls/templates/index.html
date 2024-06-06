@@ -32,6 +32,7 @@
                     <div class="cart-item">
                         <h4>{{ product.name }}</h4>
                         <p>Price: {{ product.price }} $ </p> 
+                        <p>Amount: ${product.amount}</p>
                         <h6>Remove Item:<button onclick="deleteItem('{{ product.id }}')" >
                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
@@ -259,6 +260,7 @@ function updateCartUI(checkout_products) {
       `<div class="cart-item" id="cart-item-${product.id}">
           <h4>${product.name}</h4>
           <p>Price: $${product.price * product.amount}</p>
+          <p>Amount: ${product.amount}</p>
           <h6>Remove Item:<button onclick="deleteItem(${product.id})">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
               <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
