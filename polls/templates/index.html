@@ -12,7 +12,7 @@
 
           <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
               <li><a href="{% url 'index' %}" class="nav-link px-2 link-secondary">Home</a></li>
-              <li><a href="#" class="nav-link px-2 link-body-emphasis">Products</a></li>
+              <li><a href="{% url 'index' %}" class="nav-link px-2 link-body-emphasis">Products</a></li>
               {% if not request.user.is_authenticated %}
               <li><a href="{% url 'account_signup' %}" class="nav-link px-2 link-body-emphasis">Sign up</a></li>
               <li><a href="{% url 'account_login' %}" class="nav-link px-2 link-body-emphasis">Login</a></li>
@@ -237,7 +237,9 @@ function deleteItem(productId) {
       if (data.success) {
         console.log('Item deleted successfully');
         // Remove the item from the DOM
-        $('#cart-item-' + productId).remove();
+        var item = $('#cart-item-' + productId);
+        console.log('Item to remove:', item);
+        item.remove();
         updateBill()
       } 
       else {

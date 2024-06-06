@@ -17,6 +17,7 @@ class Product(models.Model):
 class Checkout(models.Model):
     name = models.CharField(max_length=100)
     price = models.FloatField()
+    amount = models.IntegerField(default=1)
     def __str__(self) -> str:
         return self.name
 

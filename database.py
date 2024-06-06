@@ -15,8 +15,8 @@ class Database:
         search_product = class_.objects.filter(name__contains=query_name)
         return search_product
     
-    def add_checkout_product(self, name, price, class_):
-        class_.objects.create(name=name, price=price)
+    def add_checkout_product(self, name, price, amount, class_):
+        class_.objects.create(name=name, price=price, amount=amount)
         
     def get_checkout_product(self, class_):
         db_data = class_.objects.all()

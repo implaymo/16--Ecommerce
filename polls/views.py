@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
-from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from polls.models import Product, Checkout
 from database import Database
@@ -78,13 +77,12 @@ def add_to_cart(request):
     logger.info(f"Request method: {request.method}")
     if request.method == "POST":
         product_id = request.POST.get('product_id')
-        print(f"PRODUCT ID {product_id}")
         logger.info(f"Product ID: {product_id}")
         amount_product = request.POST.get("item_amount")
-        print(f"TOTAL OF ITEMS ADDED {amount_product}")
+        logger.info(f"TOTAL OF ITEMS ADDED {amount_product}")
         try:
             product = get_object_or_404(Product, id=product_id)        
-            db.add_checkout_product(class_=Checkout, name=product.name, price=product.price)
+            db.add_checkout_product(class_=Checkout, name=product.name, price=product.price, amount=amount_product)
             checkout_products = db.get_checkout_product(class_=Checkout)
         
             response_data = {
@@ -148,7 +146,7 @@ def checkout(request):
             
             line_items.append({
                 'price': stripe_price_id,
-                'quantity': 1  
+                'quantity': product.amount
             })
 
         try:
