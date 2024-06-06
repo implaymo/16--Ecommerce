@@ -36,7 +36,7 @@ def get_website_data():
         
 def bill():
     checkout_products = Checkout.objects.all()
-    all_price = [product.price for product in checkout_products]
+    all_price = [product.price * product.amount for product in checkout_products]
     total = sum(all_price)
     return total
 
@@ -84,7 +84,6 @@ def add_to_cart(request):
             product = get_object_or_404(Product, id=product_id)        
             db.add_checkout_product(class_=Checkout, name=product.name, price=product.price, amount=amount_product)
             checkout_products = db.get_checkout_product(class_=Checkout)
-            print(checkout_products.values())
         
             response_data = {
                 'message': 'Product added to cart',
