@@ -78,21 +78,30 @@ def add_to_cart(request):
     if request.method == "POST":
         product_id = request.POST.get('product_id')
         logger.info(f"Product ID: {product_id}")
+        
         amount_product = request.POST.get("item_amount")
         logger.info(f"TOTAL OF ITEMS ADDED {amount_product}")
-        try:
-            product = get_object_or_404(Product, id=product_id)        
-            db.add_checkout_product(class_=Checkout, name=product.name, price=product.price, amount=amount_product)
-            checkout_products = db.get_checkout_product(class_=Checkout)
         
+        try:
+            product = get_object_or_404(Product, id=product_id)
+            checkout_products = db.get_checkout_product(class_=Checkout)
+            if checkout_products:
+                for item in checkout_products:
+                    if item.name == product.name:
+                        item.amount += int(amount_product)
+                        item.save(update_fields=["amount"])
+                        break
+            else:
+                db.add_checkout_product(class_=Checkout, name=product.name, price=product.price, amount=amount_product)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+        else:
             response_data = {
                 'message': 'Product added to cart',
                 'checkout_products': list(checkout_products.values()),  
             }
             return JsonResponse(response_data)
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=400)
-    
+        
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
 def delete_cart(request):

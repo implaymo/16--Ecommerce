@@ -1,5 +1,4 @@
 from django.db import models
-import os
 from encrypted_model_fields.fields import EncryptedCharField, EncryptedDateField
 
 
