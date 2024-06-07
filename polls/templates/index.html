@@ -215,6 +215,11 @@ button {
 
     function addItem(productId) {
       let itemAmount = document.getElementById(`item-amount-${productId}`).value;
+      if (itemAmount < 1){
+        alert('No amount provided. Need to increase amount of items.')
+        resetAmountInput(productId)
+      }
+      else(
             $.ajax({
                 type: 'POST',
                 url: '{% url "add_to_cart" %}',
@@ -231,9 +236,10 @@ button {
                 error: function(response) {
                     alert('Error adding product to cart: ' + response.responseJSON.error);
                 }
-            });
+            }));
       resetAmountInput(productId)
 }
+
 function deleteItem(productId) {
     $.ajax({
     url: "{% url 'delete_item' %}",
