@@ -91,6 +91,8 @@ def add_to_cart(request):
                         item.amount += int(amount_product)
                         item.save(update_fields=["amount"])
                         break
+                else:
+                    db.add_checkout_product(class_=Checkout, name=product.name, price=product.price, amount=amount_product)
             else:
                 db.add_checkout_product(class_=Checkout, name=product.name, price=product.price, amount=amount_product)
         except Exception as e:
