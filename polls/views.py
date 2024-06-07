@@ -46,7 +46,7 @@ def index(request):
     get_website_data()       
     db_data = Product.objects.all()
     checkout_products = Checkout.objects.all()
-
+    
     try:
         all_price = [product.price for product in checkout_products]
         total = sum(all_price)
