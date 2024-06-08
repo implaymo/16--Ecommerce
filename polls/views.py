@@ -187,3 +187,6 @@ def cancel_checkout(request):
 
 def success_checkout(request):
     return render(request, 'success.html')
+
+def account_settings(request):
+    return render(request, 'account/settings.html')

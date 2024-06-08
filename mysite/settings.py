@@ -162,3 +162,9 @@ STRIPE_SECRET_KEY = os.getenv("STRIPE_PRIVATE_KEY")
 FIELD_ENCRYPTION_KEY = os.environ.get('ENCRYPTION_KEY')
 
 MFA_ADAPTER = "allauth.mfa.adapter.DefaultMFAAdapter"
+MFA_FORMS = {
+    'authenticate': 'allauth.mfa.forms.AuthenticateForm',
+    'reauthenticate': 'allauth.mfa.forms.AuthenticateForm',
+    'activate_totp': 'allauth.mfa.forms.ActivateTOTPForm',
+    'deactivate_totp': 'allauth.mfa.forms.DeactivateTOTPForm',
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account Settings</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Account Settings</h1>
+        <a href="{% url 'index'%}">HOME</a>
+        
+        <!-- Section for user profile details -->
+        <div class="profile-section">
+            <h2>Profile</h2>
+            <p>Email: {{ user.email }}</p>
+            <!-- Add other profile fields as needed -->
+        </div>
+
+        <!-- Section for security settings -->
+        <div class="security-section">
+            <h2>Security</h2>
+            <a href="{% url 'account_change_password' %}">Change Password</a><br>
+            <a href="{% url 'account_2fa' %}">Setup Multi-Factor Authentication (MFA)</a>
+        </div>
+
+        <!-- Logout button -->
+        <div class="logout-section">
+            <h2>Logout</h2>
+            <a href="{% url 'account_logout' %}">Logout</a>
+        </div>
+    </div>
+</body>
+</html>
