@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "polls",
     'allauth',
+    'allauth.mfa',
     'allauth.account',
     'allauth.socialaccount',
     'encrypted_model_fields'
@@ -160,3 +161,4 @@ STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLIC_KEY")
 STRIPE_SECRET_KEY = os.getenv("STRIPE_PRIVATE_KEY")
 FIELD_ENCRYPTION_KEY = os.environ.get('ENCRYPTION_KEY')
 
+MFA_ADAPTER = "allauth.mfa.adapter.DefaultMFAAdapter"
