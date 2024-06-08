@@ -155,7 +155,7 @@ button {
   <div class="album py-5 bg-body-tertiary">
     <div class="container">
 
-<!-- ALBUMS -->
+<!-- PRODUCTS -->
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
   {% for product in db_data %}
 
@@ -196,6 +196,7 @@ button {
         </div>
         {% endfor %}
   </div>
+
   <script>
     // Get all info messages
     var info_messages = document.getElementsByClassName('alert');
@@ -205,6 +206,7 @@ button {
             info_messages[i].setAttribute('style', 'display:none !important');
         }
     }, 3000);
+
 
     function resetAmountInput(productId) {
             var inputField = document.getElementById('item-amount-' + productId);
@@ -230,6 +232,7 @@ button {
                 },
                 success: function(response) {
                     alert(response.message);
+                    console.log(`Item added successfully. Added item with id: ${productId}`);
                     // Update the cart UI with the new product
                     updateCartUI(response.checkout_products);
                 },
@@ -250,12 +253,13 @@ function deleteItem(productId) {
     },
     success: function(data) {
       if (data.success) {
-        console.log('Item deleted successfully');
+        console.log(`Item deleted successfully. Delete item with id: ${productId}`);
         // Remove the item from the DOM
         var item = $('#cart-item-' + productId);
         console.log('Item to remove:', item);
         item.remove();
-        updateBill()
+        updateCartUI(data.checkout_products);
+        updateBill();
       } 
       else {
         console.error("Error deleting item: No success flag");
