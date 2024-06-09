@@ -297,7 +297,7 @@ function updateCartUI(checkout_products) {
         url: "{% url 'update_bill' %}",
         method: 'GET',
         success: function(data) {
-                    $('#bill-amount').text(data.bill);
+                $('#bill-amount').text(data.bill);
                 },
         error: function(error) {
             console.error("Error updating bill:", error);
