@@ -4,6 +4,16 @@
 
 This project is a web application built with Python and the Django framework. It features a dynamic interface using HTML, CSS, and JavaScript to update the website without refreshing. Stripe is used for the checkout and payment system, and Django Allauth is used for user authentication.
 
+
+
+https://github.com/implaymo/16--Ecommerce/assets/136201112/ca673c22-a3a2-4d83-be1b-065f3deca078
+
+
+
+https://github.com/implaymo/16--Ecommerce/assets/136201112/5d9dde6c-2715-4c91-a6c1-239deae66172
+
+
+
 ## Technologies Used
 
 - Python
@@ -13,6 +23,16 @@ This project is a web application built with Python and the Django framework. It
 - JavaScript
 - Stripe API
 - Django Allauth
+
+
+
+https://github.com/implaymo/16--Ecommerce/assets/136201112/0a87dd2c-2d4b-4201-a1fb-b179431de122
+
+
+
+https://github.com/implaymo/16--Ecommerce/assets/136201112/3023ded3-f2ec-4f69-ab01-ed2a2ddb3023
+
+
 
 ## Setup Instructions
 
